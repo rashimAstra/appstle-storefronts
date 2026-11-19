@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Appstle App — Storefronts</title>
+  <meta name="description" content="Choose a fixture storefront for Appstle Bundles security testing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #10231c;
+      --ink-soft: #3a5349;
+      --mist: #e8f1ec;
+      --foam: #f4faf7;
+      --leaf: #1f7a55;
+      --leaf-deep: #145c3f;
+      --glow: #b8e6c8;
+      --line: rgba(16, 35, 28, 0.12);
+      --shadow: 0 18px 50px rgba(16, 35, 28, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 55% at 50% -10%, rgba(184, 230, 200, 0.55), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 100% 100%, rgba(31, 122, 85, 0.08), transparent 55%),
+        linear-gradient(165deg, #f7fcf9 0%, #eef6f1 45%, #e4efe8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image:
+        linear-gradient(rgba(16, 35, 28, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 35, 28, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+    }
+
+    .shell {
+      position: relative;
+      width: min(420px, 100%);
+      min-height: min(720px, calc(100vh - 64px));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 48px 28px 36px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(244, 250, 247, 0.92));
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .shell::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      pointer-events: none;
+    }
+
+    .brand-block {
+      text-align: center;
+      z-index: 1;
+      animation: rise 800ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--leaf);
+      margin-bottom: 14px;
+    }
+
+    .eyebrow::before,
+    .eyebrow::after {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: var(--leaf);
+      opacity: 0.5;
+    }
+
+    .brand {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(2.4rem, 8vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--ink);
+    }
+
+    .brand span {
+      display: block;
+      font-family: "Manrope", sans-serif;
+      font-size: 0.38em;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-top: 10px;
+    }
+
+    .lead {
+      margin-top: 18px;
+      max-width: 280px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    .actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 1;
+      margin: 40px 0;
+      animation: rise 850ms 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .storefront {
+      appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1.5px solid var(--ink);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink);
+      text-decoration: none;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition:
+        transform 180ms ease,
+        background 180ms ease,
+        color 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    }
+
+    .storefront:hover,
+    .storefront:focus-visible {
+      background: var(--ink);
+      color: var(--foam);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(16, 35, 28, 0.18);
+      outline: none;
+    }
+
+    .storefront:active {
+      transform: translateY(0);
+    }
+
+    .storefront .meta {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .storefront:hover .meta,
+    .storefront:focus-visible .meta {
+      opacity: 0.8;
+      color: var(--glow);
+    }
+
+    .storefront .arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--mist);
+      color: var(--leaf-deep);
+      font-size: 0.95rem;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .storefront:hover .arrow,
+    .storefront:focus-visible .arrow {
+      background: var(--leaf);
+      color: white;
+      transform: translateX(2px);
+    }
+
+    .storefront-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .footer {
+      z-index: 1;
+      text-align: center;
+      animation: rise 900ms 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .footer p {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    .footer p strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .footer .hint {
+      margin-top: 8px;
+      font-family: "Manrope", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(58, 83, 73, 0.7);
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell" aria-label="Appstle storefront picker">
+    <header class="brand-block">
+      <div class="eyebrow">Bundles</div>
+      <h1 class="brand">
+        Appstle
+        <span>app</span>
+      </h1>
+      <p class="lead">Pick a fixture storefront to open the Shopify shop used for security testing.</p>
+    </header>
+
+    <nav class="actions" aria-label="Storefronts">
+      <a
+        class="storefront"
+        href="https://astra-test-bundle-1.myshopify.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="storefront-inner">
+          <span class="meta">Shop A</span>
+          <span>Storefront 1</span>
+        </span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a
+        class="storefront"
+        href="https://astra-test-bundle-2.myshopify.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="storefront-inner">
+          <span class="meta">Shop B</span>
+          <span>Storefront 2</span>
+        </span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+
+    <footer class="footer">
+      <p>hosted by <strong>Astra</strong></p>
+      <p class="hint">Opens in a new tab</p>
+    </footer>
+  </main>
+</body>
+</html>
