@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Appstle App — Storefronts</title>
   <meta name="description" content="Choose a fixture storefront for Appstle Bundles security testing.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
@@ -29,6 +30,7 @@
 
     html, body {
       min-height: 100%;
+      height: 100%;
     }
 
     body {
@@ -170,6 +172,7 @@
       font-size: 1.05rem;
       letter-spacing: -0.01em;
       cursor: pointer;
+      text-align: left;
       transition:
         transform 180ms ease,
         background 180ms ease,
@@ -260,6 +263,64 @@
       color: rgba(58, 83, 73, 0.7);
     }
 
+    .redirect-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 30%, rgba(184, 230, 200, 0.45), transparent 60%),
+        linear-gradient(165deg, #f7fcf9 0%, #eef6f1 100%);
+    }
+
+    .redirect-screen.is-active {
+      display: flex;
+    }
+
+    .redirect-card {
+      width: min(420px, 100%);
+      text-align: center;
+      padding: 40px 28px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .redirect-card h2 {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .redirect-card p {
+      color: var(--ink-soft);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      border: 3px solid var(--mist);
+      border-top-color: var(--leaf);
+      animation: spin 700ms linear infinite;
+    }
+
+    body.is-redirecting .shell {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     @keyframes rise {
       from {
         opacity: 0;
@@ -289,37 +350,78 @@
         Appstle
         <span>app</span>
       </h1>
-      <p class="lead">Pick a fixture storefront to open the Shopify shop used for security testing.</p>
+      <p class="lead">Pick a fixture storefront. It opens in this same window and tab.</p>
     </header>
 
     <nav class="actions" aria-label="Storefronts">
-      <a
+      <button
+        type="button"
         class="storefront"
-        href="https://astra-test-bundle-1.myshopify.com"
+        data-url="https://astra-test-bundle-1.myshopify.com"
+        data-label="Storefront 1"
       >
         <span class="storefront-inner">
           <span class="meta">Shop A</span>
           <span>Storefront 1</span>
         </span>
         <span class="arrow" aria-hidden="true">→</span>
-      </a>
+      </button>
 
-      <a
+      <button
+        type="button"
         class="storefront"
-        href="https://astra-test-bundle-2.myshopify.com"
+        data-url="https://astra-test-bundle-2.myshopify.com"
+        data-label="Storefront 2"
       >
         <span class="storefront-inner">
           <span class="meta">Shop B</span>
           <span>Storefront 2</span>
         </span>
         <span class="arrow" aria-hidden="true">→</span>
-      </a>
+      </button>
     </nav>
 
     <footer class="footer">
       <p>hosted by <strong>Astra</strong></p>
-      <p class="hint">Opens in this tab</p>
+      <p class="hint">Same window · same tab</p>
     </footer>
   </main>
+
+  <div class="redirect-screen" id="redirectScreen" aria-live="polite" hidden>
+    <div class="redirect-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <h2 id="redirectTitle">Opening storefront</h2>
+      <p id="redirectCopy">Redirecting in this same window…</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var screenEl = document.getElementById("redirectScreen");
+      var titleEl = document.getElementById("redirectTitle");
+      var copyEl = document.getElementById("redirectCopy");
+
+      function openInSameWindow(url, label) {
+        document.body.classList.add("is-redirecting");
+        screenEl.hidden = false;
+        screenEl.classList.add("is-active");
+        titleEl.textContent = "Opening " + label;
+        copyEl.textContent = "Staying in this tab and loading the storefront…";
+
+        // Force same-window navigation (never opens a new tab).
+        window.setTimeout(function () {
+          window.location.assign(url);
+        }, 350);
+      }
+
+      document.querySelectorAll(".storefront").forEach(function (button) {
+        button.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          openInSameWindow(button.getAttribute("data-url"), button.getAttribute("data-label"));
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
